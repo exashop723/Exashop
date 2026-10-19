@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXA SHOP - ร้านขายไอเทมเกม Roblox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0a0a0f;
+            --bg-card: #14141e;
+            --bg-card-hover: #1c1c2b;
+            --bg-input: #0e0e16;
+            --primary-red: #ff003c;
+            --primary-red-hover: #d60032;
+            --primary-red-glow: rgba(255, 0, 60, 0.4);
+            --accent-gray: #232332;
+            --text-light: #f1f1f5;
+            --text-muted: #8e8ea6;
+            --border-color: #262638;
+            --success-green: #00e676;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--primary-red);
+            box-shadow: 0 4px 20px var(--primary-red-glow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+
+        .logo span { color: var(--primary-red); text-shadow: 0 0 10px var(--primary-red-glow); }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--accent-gray);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            box-shadow: 0 0 12px var(--primary-red-glow);
+            color: #fff;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-left: 5px solid var(--primary-red);
+            padding-left: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        /* Cards Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .item-card {
+            background: linear-gradient(145deg, #181826, #111118);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary-red);
+            box-shadow: 0 8px 25px var(--primary-red-glow);
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            color: var(--primary-red);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--primary-red-glow);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .card-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin: 0.5rem 0 1rem;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--primary-red-hover);
+            box-shadow: 0 0 15px var(--primary-red-glow);
+        }
+
+        .btn-alt {
+            background: var(--accent-gray);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .btn-alt:hover {
+            border-color: var(--primary-red);
+            color: #fff;
+            background: #2b2b3d;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-red);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 30px var(--primary-red-glow);
+            animation: modalFade 0.3s ease;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .code-box {
+            background: var(--bg-input);
+            border: 2px dashed var(--primary-red);
+            padding: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin: 1.2rem 0;
+            border-radius: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px var(--primary-red-glow);
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 10px var(--primary-red-glow);
+        }
+
+        .notice-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            line-height: 1.5;
+            background: rgba(255, 0, 60, 0.08);
+            padding: 0.8rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-red);
+        }
+
+        .success-box {
+            padding: 1.5rem 0;
+        }
+
+        .success-icon {
+            font-size: 3.5rem;
+            color: var(--success-green);
+            margin-bottom: 1rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--primary-red);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--primary-red-glow);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo"><i class="fa-solid fa-gamepad"></i> EXA<span>SHOP</span></a>
+            <ul class="nav-links">
+                <li><button class="nav-btn active" onclick="showSection('all')"><i class="fa-solid fa-border-all"></i> ทั้งหมด</button></li>
+                <li><button class="nav-btn" onclick="showSection('robux')"><i class="fa-solid fa-gem"></i> เติม Robux</button></li>
+                <li><button class="nav-btn" onclick="showSection('bloxfruit')"><i class="fa-solid fa-dragon"></i> Blox Fruit</button></li>
+                <li><button class="nav-btn" onclick="showSection('mm2')"><i class="fa-solid fa-dumpster-fire"></i> มีด MM2</button></li>
+                <li><button class="nav-btn" onclick="showSection('other')"><i class="fa-solid fa-map"></i> เลือกแมพอื่นๆ</button></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- MM2 Section -->
+        <div class="section-block" id="sec-mm2">
+            <div class="section-title"><i class="fa-solid fa-dumpster-fire" style="color: var(--primary-red);"></i> มีด MM2 (Murder Mystery 2)</div>
+            <div class="grid-container">
+                <div class="item-card">
+                    <i class="fa-solid fa-khanda card-icon"></i>
+                    <div class="card-title">มีด MM2 ตรวจสอบดาบรายวัน</div>
+                    <div class="card-desc">ทักแอดมินตรวจสอบดาบรายวัน</div>
+                    <button class="btn" onclick="openCodeModal('MM2', 'รหัสสั่งซื้อ / สอบถาม MM2')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Robux Section -->
+        <div class="section-block" id="sec-robux">
+            <div class="section-title"><i class="fa-solid fa-gem" style="color: var(--primary-red);"></i> เติม Robux (ระบบ ID-Password)</div>
+            <div class="grid-container" id="robux-grid"></div>
+        </div>
+
+        <!-- Blox Fruit Section -->
+        <div class="section-block" id="sec-bloxfruit">
+            <div class="section-title"><i class="fa-solid fa-dragon" style="color: var(--primary-red);"></i> สินค้า Blox Fruit</div>
+            <div class="grid-container" id="bloxfruit-grid"></div>
+        </div>
+
+        <!-- Other Maps Section -->
+        <div class="section-block" id="sec-other">
+            <div class="section-title"><i class="fa-solid fa-map" style="color: var(--primary-red);"></i> เลือกแมพอื่นๆ</div>
+            <div class="grid-container" id="other-grid"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal: สุ่มรหัสติดต่อ -->
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-content">
+            <h3 id="codeModalTitle" style="color:#fff;">รหัสอ้างอิงของคุณ</h3>
+            <div class="code-box" id="generatedCode">EXA-XXXXX</div>
+            <button class="btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> คัดลอกรหัส</button>
+            <p class="notice-text">
+                📌 คัดลอกรหัสส่งในไลน์จะมีระบบตอบอัตโนมัต โปรดรอแอดมินตอบภายใน 5-10 นาที
+            </p>
+            <button class="btn btn-alt" onclick="closeModal('codeModal')">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <!-- Modal: ชำระเงิน Step 1 (ลิงก์ซองทรูมันนี่) -->
+    <div class="modal-overlay" id="payModalStep1">
+        <div class="modal-content">
+            <h3 style="color:#fff;" id="buyTitle">ชำระเงิน</h3>
+            <p style="color:var(--primary-red); font-size:1.2rem; font-weight:700; margin: 0.5rem 0 1rem;" id="buyPrice">0 บาท</p>
+            
+            <div class="form-group">
+                <label><i class="fa-solid fa-gift"></i> ลิงก์ซองทรูมันนี่ อั่งเปา</label>
+                <input type="text" class="form-control" id="truemoneyLink" placeholder="https://gift.truemoney.com/campaign/?v=...">
+            </div>
+
+            <button class="btn" onclick="submitStep1()"><i class="fa-solid fa-arrow-right"></i> ถัดไป (กรอกไอดี-รหัสผ่าน)</button>
+            <button class="btn btn-alt" onclick="closeModal('payModalStep1')">ยกเลิก</button>
+        </div>
+    </div>
+
+    <!-- Modal: ชำระเงิน Step 2 (กรอก ID / Password) -->
+    <div class="modal-overlay" id="payModalStep2">
+        <div class="modal-content">
+            <h3 style="color:#fff;">กรอกข้อมูลไอดี Roblox</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1rem;">สำหรับเข้าทำการเติมรายการสินค้าเข้าตัวละคร</p>
+            
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> ไอดี (Username / Email)</label>
+                <input type="text" class="form-control" id="robloxUser" placeholder="กรอกชื่อผู้ใช้ Roblox">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> รหัสผ่าน (Password)</label>
+                <input type="password" class="form-control" id="robloxPass" placeholder="กรอกรหัสผ่าน Roblox">
+            </div>
+
+            <button class="btn" onclick="submitStep2()"><i class="fa-solid fa-check"></i> ยืนยันการสั่งซื้อ</button>
+            <button class="btn btn-alt" onclick="closeModal('payModalStep2')">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <!-- Modal: ชำระเงิน สำเร็จ -->
+    <div class="modal-overlay" id="payModalSuccess">
+        <div class="modal-content">
+            <div class="success-box">
+                <i class="fa-circle-check fa-solid success-icon"></i>
+                <h3 style="color:#fff; margin-bottom: 0.5rem;">สั่งซื้อสำเร็จแล้ว!</h3>
+                <p style="color:var(--primary-red); font-weight:700; font-size:1.1rem; margin-top:1rem;">
+                    โปรดรอการเติมโรบัค 10-20 นาที
+                </p>
+            </div>
+            <button class="btn" onclick="closeModal('payModalSuccess')">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-info" style="color:var(--primary-red);"></i>
+        <span id="toastMsg">คัดลอกรหัสเรียบร้อยแล้ว</span>
+    </div>
+
+    <script>
+        // ข้อมูลแพ็กเกจ Robux
+        const robuxPackages = [
+            { rbx: 40, price: 16 },
+            { rbx: 80, price: 29 },
+            { rbx: 240, price: 87 },
+            { rbx: 400, price: 145 },
+            { rbx: 800, price: 290 },
+            { rbx: 1000, price: 365 },
+            { rbx: 1700, price: 580 },
+            { rbx: 4500, price: 1425 },
+            { rbx: 10000, price: 2850 },
+            { rbx: 22500, price: 5700 }
+        ];
+
+        // ข้อมูลสินค้า Blox Fruit
+        const bloxFruitItems = [
+            { title: "รหัสไก่เงิน", price: 15, icon: "fa-coins" },
+            { title: "รหัสไก่เงินม่วง", price: 20, icon: "fa-gem" },
+            { title: "รหัสสุ่มเผ่าวี4", price: 65, icon: "fa-skull" },
+            { title: "รหัสสุ่มผลแดง 3 ผล", price: 40, icon: "fa-apple-whole" },
+            { title: "รหัสสุ่มผลแดง 4 ผล", price: 50, icon: "fa-apple-whole" },
+            { title: "รหัสสุ่มผลถาวรในกระเป๋า (แบบธรรมดา)", price: 100, icon: "fa-box-open" },
+            { title: "รหัสสุ่มผลถาวรในกระเป๋า (แบบ 1000 โร+)", price: 250, icon: "fa-box-archive" }
+        ];
+
+        // ข้อมูลแมพอื่นๆ
+        const otherMaps = [
+            { name: "Anime Defenders", icon: "fa-shield-halved" },
+            { name: "King Legacy", icon: "fa-crown" },
+            { name: "Pet Simulator 99", icon: "fa-dog" },
+            { name: "Blade Ball", icon: "fa-volleyball" },
+            { name: "All Star Tower Defense", icon: "fa-star" }
+        ];
+
+        let currentBuyItem = null;
+
+        // Render สินค้า Robux
+        function renderRobux() {
+            const grid = document.getElementById('robux-grid');
+            grid.innerHTML = robuxPackages.map(pkg => `
+                <div class="item-card">
+                    <i class="fa-solid fa-gem card-icon"></i>
+                    <div class="card-title">${pkg.rbx.toLocaleString()} Robux</div>
+                    <div class="card-price">${pkg.price} บาท</div>
+                    <button class="btn" onclick="openPayStep1('${pkg.rbx.toLocaleString()} Robux', ${pkg.price})"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                    <button class="btn btn-alt" onclick="openCodeModal('BLOXFUIT', 'รหัสแลกเปลี่ยนผลปีศาจ')">🍇 แลกด้วยผลปีศาจ</button>
+                </div>
+            `).join('');
+        }
+
+        // Render สินค้า Blox Fruit
+        function renderBloxFruit() {
+            const grid = document.getElementById('bloxfruit-grid');
+            grid.innerHTML = bloxFruitItems.map(item => `
+                <div class="item-card">
+                    <i class="fa-solid ${item.icon} card-icon"></i>
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-price">${item.price} บาท</div>
+                    <button class="btn" onclick="openPayStep1('${item.title}', ${item.price})"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                </div>
+            `).join('');
+        }
+
+        // Render แมพอื่นๆ
+        function renderOtherMaps() {
+            const grid = document.getElementById('other-grid');
+            grid.innerHTML = otherMaps.map(map => `
+                <div class="item-card">
+                    <i class="fa-solid ${map.icon} card-icon"></i>
+                    <div class="card-title">${map.name}</div>
+                    <div class="card-desc">สอบถาม/สั่งซื้อ ไอเทมเกม ${map.name}</div>
+                    <button class="btn" onclick="openCodeModal('OTHERMAP', 'รหัสติดต่อสั่งซื้อ ${map.name}')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+            `).join('');
+        }
+
+        // สุ่มรหัสอ้างอิง
+        function generateRandomCode(type) {
+            const randomNum = Math.floor(10000 + Math.random() * 90000);
+            return `EXA-${type}-${randomNum}`;
+        }
+
+        function openCodeModal(type, title) {
+            const code = generateRandomCode(type);
+            document.getElementById('generatedCode').innerText = code;
+            document.getElementById('codeModalTitle').innerText = title;
+            document.getElementById('codeModal').style.display = 'flex';
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('generatedCode').innerText;
+            navigator.clipboard.writeText(codeText);
+            showToast('คัดลอกรหัสเรียบร้อยแล้ว: ' + codeText);
+        }
+
+        // ระบบสั่งซื้อชำระเงิน
+        function openPayStep1(title, price) {
+            currentBuyItem = { title, price };
+            document.getElementById('buyTitle').innerText = title;
+            document.getElementById('buyPrice').innerText = price + ' บาท';
+            document.getElementById('truemoneyLink').value = '';
+            document.getElementById('payModalStep1').style.display = 'flex';
+        }
+
+        function submitStep1() {
+            const link = document.getElementById('truemoneyLink').value.trim();
+            if (!link.includes('truemoney.com')) {
+                alert('กรุณากรอกลิงก์ซองทรูมันนี่ อั่งเปา ให้ถูกต้อง!');
+                return;
+            }
+            closeModal('payModalStep1');
+            document.getElementById('robloxUser').value = '';
+            document.getElementById('robloxPass').value = '';
+            document.getElementById('payModalStep2').style.display = 'flex';
+        }
+
+        function submitStep2() {
+            const user = document.getElementById('robloxUser').value.trim();
+            const pass = document.getElementById('robloxPass').value.trim();
+
+            if (!user || !pass) {
+                alert('กรุณากรอกไอดีและรหัสผ่าน Roblox ให้ครบถ้วน!');
+                return;
+            }
+
+            closeModal('payModalStep2');
+            document.getElementById('payModalSuccess').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        // กรองหมวดหมู่
+        function showSection(section) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const sections = ['sec-mm2', 'sec-robux', 'sec-bloxfruit', 'sec-other'];
+            if (section === 'all') {
+                sections.forEach(id => document.getElementById(id).style.display = 'block');
+            } else {
+                sections.forEach(id => document.getElementById(id).style.display = 'none');
+                document.getElementById('sec-' + section).style.display = 'block';
+            }
+        }
+
+        // Initialize
+        renderRobux();
+        renderBloxFruit();
+        renderOtherMaps();
+    </script>
+</body>
+</html>
