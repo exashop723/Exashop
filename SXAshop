@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SXA SHOP - ร้านขายไอเทมเกม Roblox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #08080c;
+            --bg-card: #12121c;
+            --bg-input: #0a0a10;
+            --primary-red: #ff003c;
+            --primary-red-hover: #d60032;
+            --primary-red-glow: rgba(255, 0, 60, 0.4);
+            --accent-gray: #1e1e2d;
+            --text-light: #f1f1f5;
+            --text-muted: #8e8ea6;
+            --border-color: #262638;
+            --success-green: #00e676;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Modal Authentication System (หน้าล็อกอิน/สมัครสมาชิก) */
+        .auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 1rem;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-red);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 35px var(--primary-red-glow);
+        }
+
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-logo span { color: var(--primary-red); text-shadow: 0 0 12px var(--primary-red-glow); }
+
+        .auth-tabs {
+            display: flex;
+            margin: 1.2rem 0;
+            background: var(--bg-input);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .auth-tab-btn.active {
+            background: var(--primary-red);
+            color: #fff;
+            box-shadow: 0 0 10px var(--primary-red-glow);
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: rgba(18, 18, 28, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--primary-red);
+            box-shadow: 0 4px 20px var(--primary-red-glow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.8rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        @media(min-width: 768px) {
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        .logo-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        @media(min-width: 768px) { .logo-wrap { width: auto; } }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--primary-red); text-shadow: 0 0 10px var(--primary-red-glow); }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-input);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: var(--primary-red);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover { transform: scale(1.1); }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .nav-links::-webkit-scrollbar { display: none; }
+
+        .nav-btn {
+            background: var(--accent-gray);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            box-shadow: 0 0 12px var(--primary-red-glow);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 1rem auto 2.5rem;
+            padding: 0 1rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        @media(min-width: 768px) { .container { padding: 0 1.5rem; margin: 1.5rem auto 3rem; } }
+
+        /* Banner */
+        .shop-banner {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2) 0%, rgba(18, 18, 28, 0.95) 100%);
+            border: 1px solid var(--primary-red);
+            box-shadow: 0 0 25px var(--primary-red-glow);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .shop-banner h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+
+        .shop-banner p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Stats & Feed Box */
+        .hero-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(10, 10, 16, 0.8);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+            color: var(--primary-red);
+            text-shadow: 0 0 10px var(--primary-red-glow);
+        }
+
+        .stat-info h4 { font-size: 1.3rem; font-weight: 700; color: #fff; line-height: 1.2; }
+        .stat-info p { font-size: 0.78rem; color: var(--text-muted); }
+
+        .live-feed-text {
+            font-size: 0.75rem;
+            color: var(--success-green);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 3px;
+            animation: fadeInText 0.4s ease;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-left: 4px solid var(--primary-red);
+            padding-left: 10px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(min-width: 640px) {
+            .grid-container { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
+        }
+
+        .item-card {
+            background: linear-gradient(145deg, #161624, #0f0f18);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 6px 20px var(--primary-red-glow);
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            color: var(--primary-red);
+            margin-bottom: 0.6rem;
+            text-shadow: 0 0 12px var(--primary-red-glow);
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #fff;
+        }
+
+        .card-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin: 0.3rem 0 0.8rem;
+        }
+
+        .card-desc { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+
+        .btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 0.55rem 0.8rem;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: var(--primary-red-hover);
+            box-shadow: 0 0 12px var(--primary-red-glow);
+        }
+
+        .btn-alt {
+            background: var(--accent-gray);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        .btn-alt:hover { border-color: var(--primary-red); color: #fff; background: #28283a; }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-red);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 30px var(--primary-red-glow);
+        }
+
+        .code-box {
+            background: var(--bg-input);
+            border: 2px dashed var(--primary-red);
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .form-group { text-align: left; margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.3rem; color: var(--text-muted); }
+
+        .form-control {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-control:focus { border-color: var(--primary-red); box-shadow: 0 0 8px var(--primary-red-glow); }
+
+        .notice-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+            line-height: 1.4;
+            background: rgba(255, 0, 60, 0.08);
+            padding: 0.7rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-red);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--primary-red);
+            color: #fff;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 15px var(--primary-red-glow);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 2000;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- หน้าต่าง ล็อกอิน / สมัครสมาชิก (จะหายไปเมื่อเข้าสู่ระบบแล้ว) -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fa-solid fa-gamepad"></i> SXA <span>SHOP</span></div>
+            <p style="color:var(--text-muted); font-size:0.85rem;">กรุณาลงชื่อเข้าใช้เพื่อเข้าสู่ร้านค้า</p>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthMode('login')">เข้าสู่ระบบ</button>
+                <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthMode('register')">สมัครสมาชิก</button>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> ชื่อผู้ใช้งาน (Username)</label>
+                <input type="text" class="form-control" id="authUsername" placeholder="กรอกชื่ออะไรก็ได้">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> รหัสผ่าน (Password)</label>
+                <input type="password" class="form-control" id="authPassword" placeholder="กรอกรหัสผ่าน">
+            </div>
+
+            <button class="btn" id="authSubmitBtn" onclick="handleAuthSubmit()"><i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
+    <!-- แถบด้านบน (Header) -->
+    <header>
+        <div class="nav-container">
+            <div class="logo-wrap">
+                <a href="#" class="logo"><i class="fa-solid fa-gamepad"></i> SXA<span>SHOP</span></a>
+                <div class="user-profile-badge">
+                    <span><i class="fa-solid fa-circle-user" style="color:var(--primary-red);"></i> <span id="displayUsername">Customer</span></span>
+                    <button class="btn-logout" onclick="handleLogout()" title="ออกจากระบบ"><i class="fa-solid fa-power-off"></i></button>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><button class="nav-btn active" onclick="showSection('all')"><i class="fa-solid fa-border-all"></i> ทั้งหมด</button></li>
+                <li><button class="nav-btn" onclick="showSection('robux')"><i class="fa-solid fa-gem"></i> เติม Robux</button></li>
+                <li><button class="nav-btn" onclick="showSection('bloxfruit')"><i class="fa-solid fa-dragon"></i> Blox Fruit</button></li>
+                <li><button class="nav-btn" onclick="showSection('mm2')"><i class="fa-solid fa-dumpster-fire"></i> มีด/ปืน MM2</button></li>
+                <li><button class="nav-btn" onclick="showSection('other')"><i class="fa-solid fa-map"></i> แมพอื่นๆ</button></li>
+                <li><button class="nav-btn" onclick="showSection('custom')"><i class="fa-solid fa-ellipsis"></i> อื่นๆ</button></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Banner -->
+        <div class="shop-banner">
+            <h2>🔥 ยินดีต้อนรับสู่ SXA SHOP 🔥</h2>
+            <p>ศูนย์รวมไอเทมเกม Roblox ยอดฮิต เติมไว ปลอดภัย 100% เปิดบริการตลอด 24 ชม.</p>
+        </div>
+
+        <!-- แถบสถิติ + ข้อความซื้อล่าสุดจะแสดงเฉพาะในกล่องนี้ -->
+        <div class="hero-banner">
+            <div class="stat-card">
+                <i class="fa-solid fa-users stat-icon"></i>
+                <div class="stat-info">
+                    <h4>7,890 คน</h4>
+                    <p>จำนวนผู้ลงชื่อเข้าใช้ระบบ</p>
+                </div>
+            </div>
+            <div class="stat-card" style="border-color: var(--primary-red);">
+                <i class="fa-solid fa-bag-shopping stat-icon"></i>
+                <div class="stat-info">
+                    <h4 id="totalOrdersCount">18,453</h4>
+                    <p>คำสั่งซื้อสำเร็จทั้งหมด</p>
+                    <div class="live-feed-text" id="liveFeedText">🔄 กำลังโหลดรายการล่าสุด...</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-circle-check stat-icon" style="color: var(--success-green);"></i>
+                <div class="stat-info">
+                    <h4>พร้อมใช้งาน</h4>
+                    <p>ระบบอัตโนมัติ 24 ชม.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- หมวดหมู่ MM2 -->
+        <div class="section-block" id="sec-mm2">
+            <div class="section-title"><i class="fa-solid fa-dumpster-fire" style="color: var(--primary-red);"></i> มีด & ปืน MM2 (Murder Mystery 2)</div>
+            <div class="grid-container">
+                <div class="item-card">
+                    <i class="fa-solid fa-khanda card-icon"></i>
+                    <div class="card-title">มีด MM2 ตรวจสอบดาบรายวัน</div>
+                    <div class="card-desc">ทักแอดมินตรวจสอบมีดประจำวัน</div>
+                    <button class="btn" onclick="openCodeModal('MM2-KNIFE', 'รหัสสั่งซื้อมีด MM2')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-gun card-icon"></i>
+                    <div class="card-title">ปืน MM2 ตรวจสอบปืนรายวัน</div>
+                    <div class="card-desc">ทักแอดมินตรวจสอบปืนประจำวัน</div>
+                    <button class="btn" onclick="openCodeModal('MM2-GUN', 'รหัสสั่งซื้อปืน MM2')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-bolt card-icon"></i>
+                    <div class="card-title">รับฟาม MM2 ตรวจสอบรายวัน</div>
+                    <div class="card-desc">ทักแอดมินตรวจสอบรายละเอียดฟามประจำวัน</div>
+                    <button class="btn" onclick="openCodeModal('MM2-FARM', 'รหัสติดต่อรับฟาม MM2')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-radio card-icon"></i>
+                    <div class="card-title">เกมพาสวิทยุ MM2</div>
+                    <div class="card-price">30 บาท</div>
+                    <button class="btn" onclick="openPayStep1('เกมพาสวิทยุ MM2', 30)"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-user-shield card-icon"></i>
+                    <div class="card-title">ไอดีเวล 50+ MM2</div>
+                    <div class="card-price">75 บาท</div>
+                    <button class="btn" onclick="openPayStep1('ไอดีเวล 50+ MM2', 75)"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- หมวดหมู่ Robux -->
+        <div class="section-block" id="sec-robux">
+            <div class="section-title"><i class="fa-solid fa-gem" style="color: var(--primary-red);"></i> เติม Robux (ระบบ ID-Password)</div>
+            <div class="grid-container" id="robux-grid"></div>
+        </div>
+
+        <!-- หมวดหมู่ Blox Fruit -->
+        <div class="section-block" id="sec-bloxfruit">
+            <div class="section-title"><i class="fa-solid fa-dragon" style="color: var(--primary-red);"></i> สินค้า Blox Fruit</div>
+            <div class="grid-container" id="bloxfruit-grid"></div>
+        </div>
+
+        <!-- หมวดหมู่ แมพอื่นๆ -->
+        <div class="section-block" id="sec-other">
+            <div class="section-title"><i class="fa-solid fa-map" style="color: var(--primary-red);"></i> เลือกแมพอื่นๆ</div>
+            <div class="grid-container" id="other-grid"></div>
+        </div>
+
+        <!-- หมวดหมู่ อื่นๆ -->
+        <div class="section-block" id="sec-custom">
+            <div class="section-title"><i class="fa-solid fa-ellipsis" style="color: var(--primary-red);"></i> อื่นๆ / บริการพิเศษ</div>
+            <div class="grid-container">
+                <div class="item-card">
+                    <i class="fa-solid fa-headset card-icon"></i>
+                    <div class="card-title">ติดต่อแอดมิน / สอบถามเพิ่มเติม</div>
+                    <div class="card-desc">บริการพิเศษนอกเหนือจากรายการ</div>
+                    <button class="btn" onclick="openCodeModal('HELP', 'รหัสติดต่อแอดมินทั่วไป')"><i class="fa-solid fa-comments"></i> ติดต่อแอดมิน</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-gift card-icon"></i>
+                    <div class="card-title">แลกรับโค้ดกิจกรรมพิเศษ</div>
+                    <div class="card-desc">รับรางวัลหรือส่วนลดพิเศษ</div>
+                    <button class="btn" onclick="openCodeModal('EVENT', 'รหัสเข้าร่วมกิจกรรมพิเศษ')"><i class="fa-solid fa-ticket"></i> รับสิทธิ์กิจกรรม</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal: สุ่มรหัสติดต่อ -->
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-content">
+            <h3 id="codeModalTitle" style="color:#fff; font-size: 1.1rem;">รหัสอ้างอิงของคุณ</h3>
+            <div class="code-box" id="generatedCode">SXA-XXXXX</div>
+            <button class="btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> คัดลอกรหัส</button>
+            <p class="notice-text">📌 ส่งรหัสนี้ให้แอดมินในแชทเพื่อดำเนินการต่อ</p>
+            <button class="btn btn-alt" onclick="closeModal('codeModal')">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <!-- Modal: ชำระเงิน Step 1 -->
+    <div class="modal-overlay" id="payModalStep1">
+        <div class="modal-content">
+            <h3 style="color:#fff; font-size: 1.1rem;" id="buyTitle">ชำระเงิน</h3>
+            <p style="color:var(--primary-red); font-size:1.1rem; font-weight:700; margin: 0.4rem 0 0.8rem;" id="buyPrice">0 บาท</p>
+            <div class="form-group">
+                <label><i class="fa-solid fa-gift"></i> ลิงก์ซองทรูมันนี่ อั่งเปา</label>
+                <input type="text" class="form-control" id="truemoneyLink" placeholder="https://gift.truemoney.com/campaign/?v=...">
+            </div>
+            <button class="btn" onclick="submitStep1()"><i class="fa-solid fa-arrow-right"></i> ถัดไป (กรอกไอดี-รหัสผ่าน)</button>
+            <button class="btn btn-alt" onclick="closeModal('payModalStep1')">ยกเลิก</button>
+        </div>
+    </div>
+
+    <!-- Modal: ชำระเงิน Step 2 -->
+    <div class="modal-overlay" id="payModalStep2">
+        <div class="modal-content">
+            <h3 style="color:#fff; font-size: 1.1rem;">กรอกข้อมูลไอดี Roblox</h3>
+            <p style="color:var(--text-muted); font-size:0.78rem; margin-bottom: 0.8rem;">สำหรับดำเนินการเติมสินค้า</p>
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> ไอดี (Username / Email)</label>
+                <input type="text" class="form-control" id="robloxUser" placeholder="ชื่อผู้ใช้ Roblox">
+            </div>
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> รหัสผ่าน (Password)</label>
+                <input type="password" class="form-control" id="robloxPass" placeholder="รหัสผ่าน Roblox">
+            </div>
+            <button class="btn" onclick="submitStep2()"><i class="fa-solid fa-check"></i> ยืนยันการสั่งซื้อ</button>
+            <button class="btn btn-alt" onclick="closeModal('payModalStep2')">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <!-- Modal: สำเร็จ -->
+    <div class="modal-overlay" id="payModalSuccess">
+        <div class="modal-content">
+            <div class="success-box" style="padding: 1rem 0;">
+                <i class="fa-circle-check fa-solid" style="font-size: 3rem; color: var(--success-green); margin-bottom: 0.8rem;"></i>
+                <h3 style="color:#fff; margin-bottom: 0.3rem;">สั่งซื้อสำเร็จแล้ว!</h3>
+                <p style="color:var(--primary-red); font-weight:700; font-size:0.95rem; margin-top:0.5rem;">ระบบกำลังตรวจสอบและดำเนินการให้</p>
+            </div>
+            <button class="btn" onclick="closeModal('payModalSuccess')">ตกลง</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-info" style="color:var(--primary-red);"></i>
+        <span id="toastMsg">คัดลอกเรียบร้อยแล้ว</span>
+    </div>
+
+    <script>
+        // ระบบ Auth & LocalStorage
+        let currentAuthMode = 'login';
+
+        function checkExistingSession() {
+            const savedUser = localStorage.getItem('sxa_current_user');
+            if (savedUser) {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('displayUsername').innerText = savedUser;
+            } else {
+                document.getElementById('authOverlay').style.display = 'flex';
+            }
+        }
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if (mode === 'login') {
+                loginBtn.classList.add('active');
+                regBtn.classList.remove('active');
+                submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ';
+            } else {
+                regBtn.classList.add('active');
+                loginBtn.classList.remove('active');
+                submitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> สมัครสมาชิก';
+            }
+        }
+
+        function handleAuthSubmit() {
+            const u = document.getElementById('authUsername').value.trim();
+            const p = document.getElementById('authPassword').value.trim();
+
+            if (!u || !p) {
+                alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน!');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('sxa_users') || '{}');
+
+            if (currentAuthMode === 'register') {
+                users[u] = p;
+                localStorage.setItem('sxa_users', JSON.stringify(users));
+                localStorage.setItem('sxa_current_user', u);
+                alert('สมัครสมาชิกและลงชื่อเข้าใช้สำเร็จ!');
+            } else {
+                if (users[u] && users[u] === p) {
+                    localStorage.setItem('sxa_current_user', u);
+                } else {
+                    // อนุญาตให้เข้าได้ทันทีเพื่อความสะดวก
+                    localStorage.setItem('sxa_current_user', u);
+                }
+            }
+
+            document.getElementById('displayUsername').innerText = u;
+            document.getElementById('authOverlay').style.display = 'none';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('sxa_current_user');
+            document.getElementById('authUsername').value = '';
+            document.getElementById('authPassword').value = '';
+            document.getElementById('authOverlay').style.display = 'flex';
+        }
+
+        // สินค้าและรายการสถิติ
+        let totalOrdersCount = 18453;
+
+        const robuxPackages = [
+            { rbx: 40, price: 16 }, { rbx: 80, price: 29 }, { rbx: 240, price: 87 },
+            { rbx: 400, price: 145 }, { rbx: 800, price: 290 }, { rbx: 1000, price: 365 },
+            { rbx: 1700, price: 580 }, { rbx: 4500, price: 1425 }, { rbx: 10000, price: 2850 }
+        ];
+
+        const bloxFruitItems = [
+            { title: "รหัสไก่เงิน", price: 15, icon: "fa-coins" },
+            { title: "รหัสสุ่มเผ่าวี4", price: 65, icon: "fa-skull" },
+            { title: "รหัสสุ่มผลแดง 3 ผล", price: 40, icon: "fa-apple-whole" },
+            { title: "รหัสสุ่มผลถาวร", price: 100, icon: "fa-box-open" }
+        ];
+
+        const otherMaps = [
+            { name: "Anime Defenders", icon: "fa-shield-halved" },
+            { name: "King Legacy", icon: "fa-crown" },
+            { name: "Pet Simulator 99", icon: "fa-dog" },
+            { name: "Blade Ball", icon: "fa-volleyball" }
+        ];
+
+        const allAvailableItems = [
+            "40 Robux", "80 Robux", "800 Robux", "เกมพาสวิทยุ MM2", "ไอดีเวล 50+ MM2",
+            "รหัสไก่เงิน Blox Fruit", "รหัสสุ่มเผ่าวี4", "มีด MM2 ตรวจสอบรายวัน", "ปืน MM2 ตรวจสอบรายวัน"
+        ];
+
+        const randomUsernames = [
+            "User_K9*", "Roblox_Pro99", "Gamer_007", "Kaitun_Za", "Boss_X", "Ployy_RBX"
+        ];
+
+        function updateOrderStat() {
+            document.getElementById('totalOrdersCount').innerText = totalOrdersCount.toLocaleString();
+        }
+
+        function renderRobux() {
+            document.getElementById('robux-grid').innerHTML = robuxPackages.map(pkg => `
+                <div class="item-card">
+                    <i class="fa-solid fa-gem card-icon"></i>
+                    <div class="card-title">${pkg.rbx.toLocaleString()} Robux</div>
+                    <div class="card-price">${pkg.price} บาท</div>
+                    <button class="btn" onclick="openPayStep1('${pkg.rbx.toLocaleString()} Robux', ${pkg.price})"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                </div>
+            `).join('');
+        }
+
+        function renderBloxFruit() {
+            document.getElementById('bloxfruit-grid').innerHTML = bloxFruitItems.map(item => `
+                <div class="item-card">
+                    <i class="fa-solid ${item.icon} card-icon"></i>
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-price">${item.price} บาท</div>
+                    <button class="btn" onclick="openPayStep1('${item.title}', ${item.price})"><i class="fa-solid fa-cart-shopping"></i> ซื้อเลย</button>
+                </div>
+            `).join('');
+        }
+
+        function renderOtherMaps() {
+            document.getElementById('other-grid').innerHTML = otherMaps.map(map => `
+                <div class="item-card">
+                    <i class="fa-solid ${map.icon} card-icon"></i>
+                    <div class="card-title">${map.name}</div>
+                    <div class="card-desc">ไอเทมเกม ${map.name}</div>
+                    <button class="btn" onclick="openCodeModal('MAP', 'รหัสติดต่อสั่งซื้อ ${map.name}')"><i class="fa-solid fa-comment-dots"></i> สนใจสั่งซื้อ</button>
+                </div>
+            `).join('');
+        }
+
+        function generateRandomCode(type) {
+            return `SXA-${type}-${Math.floor(10000 + Math.random() * 90000)}`;
+        }
+
+        function openCodeModal(type, title) {
+            document.getElementById('generatedCode').innerText = generateRandomCode(type);
+            document.getElementById('codeModalTitle').innerText = title;
+            document.getElementById('codeModal').style.display = 'flex';
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(document.getElementById('generatedCode').innerText);
+            showToast('คัดลอกรหัสเรียบร้อยแล้ว');
+        }
+
+        function openPayStep1(title, price) {
+            document.getElementById('buyTitle').innerText = title;
+            document.getElementById('buyPrice').innerText = price + ' บาท';
+            document.getElementById('truemoneyLink').value = '';
+            document.getElementById('payModalStep1').style.display = 'flex';
+        }
+
+        function submitStep1() {
+            if (!document.getElementById('truemoneyLink').value.includes('truemoney.com')) {
+                alert('กรุณากรอกลิงก์ซองทรูมันนี่ให้ถูกต้อง!');
+                return;
+            }
+            closeModal('payModalStep1');
+            document.getElementById('robloxUser').value = '';
+            document.getElementById('robloxPass').value = '';
+            document.getElementById('payModalStep2').style.display = 'flex';
+        }
+
+        function submitStep2() {
+            if (!document.getElementById('robloxUser').value || !document.getElementById('robloxPass').value) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน!');
+                return;
+            }
+            closeModal('payModalStep2');
+            document.getElementById('payModalSuccess').style.display = 'flex';
+            totalOrdersCount++;
+            updateOrderStat();
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.style.display = 'flex';
+            setTimeout(() => t.style.display = 'none', 2500);
+        }
+
+        function startLiveFeed() {
+            setInterval(() => {
+                const user = randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
+                const item = allAvailableItems[Math.floor(Math.random() * allAvailableItems.length)];
+                document.getElementById('liveFeedText').innerText = `🔥 ${user} ซื้อ ${item} แล้ว!`;
+                totalOrdersCount++;
+                updateOrderStat();
+            }, 6000);
+        }
+
+        function showSection(section) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            const secs = ['sec-mm2', 'sec-robux', 'sec-bloxfruit', 'sec-other', 'sec-custom'];
+            if (section === 'all') {
+                secs.forEach(id => document.getElementById(id).style.display = 'block');
+            } else {
+                secs.forEach(id => document.getElementById(id).style.display = 'none');
+                document.getElementById('sec-' + section).style.display = 'block';
+            }
+        }
+
+        // Initialize App
+        checkExistingSession();
+        renderRobux();
+        renderBloxFruit();
+        renderOtherMaps();
+        updateOrderStat();
+        startLiveFeed();
+    </script>
+</body>
+</html>
